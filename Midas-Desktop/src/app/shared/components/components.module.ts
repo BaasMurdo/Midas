@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
 import { LoaderButtonComponent } from './loader-button/loader-button.component';
-import { MaterialModule } from '@app/material.module';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from '../../material.module';
 
 const EXPORTED_DECLARATIONS = [
   LoaderButtonComponent,

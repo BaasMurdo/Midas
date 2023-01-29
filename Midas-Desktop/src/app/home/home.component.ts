@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { IpcService } from '@app/_services/ipc.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
-import { TensorHelperService } from '@app/_services/tensor-helper.service';
+import { IpcService } from '../_services/ipc.service';
+import { TensorHelperService } from '../_services/tensor-helper.service';
 
 @Component({
   selector: 'app-home',
@@ -45,10 +45,12 @@ export class HomeComponent implements OnInit {
         this.showImage = true;
         this.changeDetectorRef.detectChanges();
         const imgElement = document.getElementById('theone') as HTMLImageElement;
-
+        console.log('has Img, is showing image, passing to prediction')
         const res = await this.tfhs.predict(imgElement)
         console.log(res);
       });
+    } else {
+      console.log('no service')
     }
   }
 

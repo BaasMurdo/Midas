@@ -1,0 +1,2 @@
+// Long error can be solved by adding :{
+// /// <reference types="long" /> to the file.

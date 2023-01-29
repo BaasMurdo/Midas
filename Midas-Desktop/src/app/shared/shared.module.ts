@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { ComponentsModule } from './components/components.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
 import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [

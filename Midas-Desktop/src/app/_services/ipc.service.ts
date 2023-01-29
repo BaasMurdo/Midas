@@ -20,23 +20,30 @@ export class IpcService {
   openDevTools() {
     if (this.hasApi) {
       this.api.electronIpcSend('dev-tools');
+    } else {
+      console.log('no api picked up')
     }
   }
 
   openExternalLink(url: string) {
     if (this.hasApi) {
       this.api.electronIpcSend('open-link', url);
+    } else {
+      console.log('no api picked up')
     }
   }
 
-  takeScreenShot(): Observable<{path: string, image: any}> {
-    if(this.hasApi){
+  takeScreenShot(): Observable<{ path: string, image: any }> {
+    console.log('takeScreenShot inside, pre api check')
+    if (this.hasApi) {
       this.api.electronIpcSend('take-screen');
       return new Observable(subscriber => {
         this.api.electronIpcOn('take-screen-done', (event, arg) => {
-          subscriber.next({path: arg.location, image: arg.screenshot});
+          subscriber.next({ path: arg.location, image: arg.screenshot });
         });
       });
+    } else {
+      console.log('no api picked up')
     }
   }
 

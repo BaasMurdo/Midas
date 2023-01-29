@@ -6,16 +6,16 @@
 /out-tsc
 /app-builds
 /release
+main.js
 src/**/*.js
 !src/karma.conf.js
 *.js.map
-/release-builds
 
 # dependencies
-/node_modules
+node_modules
 
 # IDEs and editors
-/.idea
+.idea
 .project
 .classpath
 .c9/
@@ -31,6 +31,7 @@ src/**/*.js
 !.vscode/extensions.json
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage
@@ -43,6 +44,8 @@ testem.log
 /e2e/*.js
 !/e2e/protractor.conf.js
 /e2e/*.map
+/e2e/tracing
+/e2e/screenshots
 
 # System Files
 .DS_Store
