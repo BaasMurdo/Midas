@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain, Menu, shell, desktopCapturer, screen } fro
 import * as path from 'path';
 import * as fs from 'fs';
 
+
 let win: BrowserWindow | null = null;
 
 app.on('ready', createWindow);
@@ -10,6 +11,7 @@ app.on('activate', () => {
   if (win === null) {
     createWindow();
   }
+
 });
 
 function createWindow() {
@@ -20,8 +22,9 @@ function createWindow() {
   win = new BrowserWindow({
     x: 0,
     y: 0,
-    width: 400,
-    height: 400,
+    width: 850,
+    height: 750,
+    resizable: false,
     webPreferences: {
       nodeIntegration: false,
       allowRunningInsecureContent: true,
@@ -36,6 +39,8 @@ function createWindow() {
 
   // https://stackoverflow.com/a/58548866/600559
   Menu.setApplicationMenu(null);
+
+  app.commandLine.appendSwitch('allow-insecure-localhost', 'true');
 
   win.loadFile(path.join(app.getAppPath(), 'dist', 'index.html'));
 
@@ -55,7 +60,8 @@ ipcMain.on('take-screen', (event, args) => {
   desktopCapturer.getSources({ types: ['window', 'screen'], thumbnailSize: { width: 1920, height: 1080 } }).then(sources => {
     for (let i = 0; i < sources.length; ++i) {
       console.log('for sources', sources[i])
-      if (sources[i].name.toLowerCase() === 'entire screen') {
+
+      if (sources[i].id.toLowerCase() === 'window:22742420:0') {
         const screenshot = sources[i].thumbnail.toPNG();
         const d = new Date();
         const u = Math.random().toString(36).slice(2) + '_' + Math.random().toString(36).slice(2) + '_' + d.getUTCDate().toString() + d.getUTCMilliseconds().toString();
@@ -70,6 +76,8 @@ ipcMain.on('take-screen', (event, args) => {
           console.log('NO WIN takeScreenShot')
         }
 
+      } else {
+        console.log('no window found')
       }
     }
   }
@@ -79,3 +87,29 @@ ipcMain.on('take-screen', (event, args) => {
 ipcMain.on('open-link', (event, args) => {
   shell.openExternal(args[0]);
 });
+
+// ipcMain.on('set-live', async (event, args) => {
+
+//   let stream = null;
+//   let sourceId = 'window:22742420:0';
+
+//   stream = await args[0].mediaDevices.getUserMedia({
+//     audio: false,
+//     video: {
+//       mandatory: {
+//         chromeMediaSource: 'desktop',
+//         chromeMediaSourceId: sourceId,
+//         minWidth: 1280,
+//         maxWidth: 1280,
+//         minHeight: 720,
+//         maxHeight: 720
+//       }
+//     }
+//   })
+
+//   if (win) {
+//     event.sender.send('set-live-done', { stream });
+//   } else {
+//     console.log('NO WIN takeScreenShot')
+//   }
+// });

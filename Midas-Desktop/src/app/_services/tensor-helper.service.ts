@@ -10,6 +10,9 @@ import { Subject } from 'rxjs';
 })
 export class TensorHelperService {
   $modelLoaded: Subject<Boolean> = new Subject<Boolean>();
+  canvas: HTMLCanvasElement;
+  context: CanvasRenderingContext2D;
+  video: HTMLVideoElement;
 
 
   constructor() {
@@ -31,39 +34,88 @@ export class TensorHelperService {
 
     console.log('load end');
     if (this.model) {
+      console.log('load good');
       this.$modelLoaded.next(true);
     } else {
-      this.$modelLoaded.next(true);
+      console.log('load bad');
+      this.$modelLoaded.next(false);
     }
   }
 
-  async predict(image: HTMLImageElement) {
-    try {
-      console.log('in predict')
-      console.log('predict start');
-      const result = await this.model.detect(image);
-      console.log('predict end');
+  async predict(image: any) {
+    if (image)
+      try {
+        console.log('in predict')
+        console.log('predict start');
+        const result = await this.model.detect(image);
+        console.log('predict end');
 
 
-      const c = document.getElementById('canvas') as HTMLCanvasElement;
-      const context = c.getContext('2d');
-      context.drawImage(image, 0, 0);
-      context.font = '10px Arial';
+        const c = document.getElementById('canvas') as HTMLCanvasElement;
+        c.width = 224;
+        c.height = 224;
+        console.log('canvas ?', c);
+        const context = c.getContext('2d');
+        context.drawImage(image, 0, 0);
+        context.font = '10px Arial';
 
-      console.log('number of detections: ', result.length);
-      for (let i = 0; i < result.length; i++) {
-        context.beginPath();
-        context.rect(...result[i].bbox);
-        context.lineWidth = 1;
-        context.strokeStyle = 'green';
-        context.fillStyle = 'green';
-        context.stroke();
-        context.fillText(
-          result[i].score.toFixed(3) + ' ' + result[i].class, result[i].bbox[0],
-          result[i].bbox[1] > 10 ? result[i].bbox[1] - 5 : 10);
+        console.log('number of detections: ', result.length);
+        for (let i = 0; i < result.length; i++) {
+          context.beginPath();
+          context.rect(...result[i].bbox);
+          context.lineWidth = 1;
+          context.strokeStyle = 'green';
+          context.fillStyle = 'green';
+          context.stroke();
+          context.fillText(
+            result[i].score.toFixed(3) + ' ' + result[i].class, result[i].bbox[0],
+            result[i].bbox[1] > 10 ? result[i].bbox[1] - 5 : 10);
+        }
+      } catch (ex) {
+        console.log('try/c error', ex)
       }
-    } catch (ex) {
-      console.log('try/c error', ex)
+  }
+
+
+  startPredictVideo(video: HTMLVideoElement) {
+    this.video = video;
+    this.canvas = document.getElementById("canvas") as HTMLCanvasElement;
+    this.context = this.canvas.getContext("2d")
+
+    video.addEventListener("play", () => {
+      this.canvas.width = video.videoWidth
+      this.canvas.height = video.videoHeight
+      this.timerCallback()
+    }, false)
+  }
+
+  async timerCallback() {
+    if (this.video.paused || this.video.ended) {
+      return
+    }
+    await this.computeFrame()
+    setTimeout(() => this.timerCallback(), 0)
+  };
+
+  async computeFrame() {
+    // detect objects in the image.
+    const predictions = await this.model.detect(this.video)
+
+    const context = this.context
+    // draws the frame from the video at position (0, 0)
+    context.drawImage(this.video, 0, 0)
+
+    context.strokeStyle = "red"
+    context.fillStyle = "red"
+    context.font = "16px sans-serif"
+    for (const { bbox: [x, y, width, height], class: _class, score } of predictions) {
+      // draws a rect with top-left corner of (x, y)
+      context.strokeRect(x, y, width, height)
+      // writes the class directly above (x, y), outside the rectangle
+      context.fillText(_class, x, y)
+      // writes the class directly below (x, y), inside the rectangle
+      context.fillText(score.toFixed(2), x, y + 16)
     }
   }
+
 }

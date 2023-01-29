@@ -2,15 +2,19 @@
   <button fxFlex mat-flat-button color="accent" (click)="takeScreenShotNow()">
     Take Sreenshot
   </button>
+  <button fxFlex mat-flat-button color="accent" (click)="goLive()">
+    Live
+  </button>
   <button fxFlex mat-flat-button color="accent" (click)="openDevTools()">
     Tools
   </button>
   <div *ngIf="showImage">
     <img id="theone" width="700px" height="400px" [src]="currentImg" />
   </div>
-  <div>
-    <canvas id="canvas"></canvas>
+  <div class="app">
+    <div class="app-header">
+      <video id="live"></video>
+      <canvas id="canvas"></canvas>
+    </div>
   </div>
 </div>
-
-

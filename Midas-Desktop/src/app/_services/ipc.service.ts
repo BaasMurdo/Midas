@@ -17,6 +17,10 @@ export class IpcService {
     }
   }
 
+  get navigator(): any {
+    return (window as any).navigator
+  }
+
   openDevTools() {
     if (this.hasApi) {
       this.api.electronIpcSend('dev-tools');
@@ -28,6 +32,20 @@ export class IpcService {
   openExternalLink(url: string) {
     if (this.hasApi) {
       this.api.electronIpcSend('open-link', url);
+    } else {
+      console.log('no api picked up')
+    }
+  }
+
+  setVideo(): Observable<{ stream: any}> {
+    console.log('video inside, pre api check')
+    if (this.hasApi) {
+      this.api.electronIpcSend('set-live', this.navigator);
+      return new Observable(subscriber => {
+        this.api.electronIpcOn('set-live-done', (event, arg) => {
+          subscriber.next({ stream: (arg as any).stream});
+        });
+      });
     } else {
       console.log('no api picked up')
     }

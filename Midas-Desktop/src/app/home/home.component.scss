@@ -1,0 +1,38 @@
+
+// window 901 x 622
+// equals to video of 900 x 700
+
+.base {
+  position: absolute;
+  left: 8;
+  text-align: center;
+  width: 770px;
+  height: 580px;
+  top: 100px;
+}
+
+.app {
+  text-align: center;
+}
+
+.app-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+
+#canvas {
+  @extend .base;
+  z-index: 3;
+}
+
+#live {
+  @extend .base;
+  z-index: 2;
+}
