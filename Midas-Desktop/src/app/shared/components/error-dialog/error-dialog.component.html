@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<div mat-dialog-content>
+  <h3>{{ data.message }}</h3>
+</div>
+<div mat-dialog-actions fxLayoutGap="15px">
+  <button
+    *ngIf="data.showPositive"
+    [style.max-width]="data.buttonWidth ? data.buttonWidth : 'auto'"
+    [ngClass]="data.buttonPosition"
+    fxFlex
+    mat-flat-button
+    color="primary"
+    (click)="confirm(true)"
+  >
+    {{ data.positiveText }}
+  </button>
+
+  <button
+    *ngIf="data.showNegative"
+    [style.max-width]="data.buttonWidth ? data.buttonWidth : 'auto'"
+    [ngClass]="data.buttonPosition"
+    fxFlex
+    mat-flat-button
+    color="accent"
+    (click)="confirm(false)"
+  >
+    {{ data.negativeText }}
+  </button>
+</div>

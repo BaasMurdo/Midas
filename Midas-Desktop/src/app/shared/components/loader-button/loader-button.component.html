@@ -1,0 +1,26 @@
+<ng-container *ngIf="color === 'primary'">
+    <button *ngIf="!loading" fxFlex mat-flat-button color="primary"  [ngClass]="{ 'default': defaultSize}" (click)="execute()" [disabled]="disabled">
+        {{label}}
+    </button>
+    <button *ngIf="loading" fxFlex mat-flat-button type="button" [ngClass]="{ 'default': defaultSize}" color="primary">
+        <mat-spinner color="accent" diameter="24" style="margin: 0 auto;"></mat-spinner>
+    </button>
+</ng-container>
+
+<ng-container *ngIf="color === 'accent'">
+    <button *ngIf="!loading" fxFlex mat-flat-button color="accent" [ngClass]="{ 'default': defaultSize}" (click)="execute()" [disabled]="disabled">
+        {{label}}
+    </button>
+    <button *ngIf="loading" fxFlex mat-flat-button type="button" [ngClass]="{ 'default': defaultSize}" color="accent">
+        <mat-spinner color="primary" diameter="24" style="margin: 0 auto;"></mat-spinner>
+    </button>
+</ng-container>
+
+<ng-container *ngIf="color !== 'primary' && color !== 'accent'">
+    <button *ngIf="!loading" fxFlex mat-flat-button [class]="color + '-button'" [ngClass]="{ 'default': defaultSize}" (click)="execute()" [disabled]="disabled">
+        {{label}}
+    </button>
+    <button *ngIf="loading" fxFlex mat-flat-button type="button" [class]="color + '-button'" [ngClass]="{ 'default': defaultSize}">
+        <mat-spinner color="primary" diameter="24" style="margin: 0 auto;"></mat-spinner>
+    </button>
+</ng-container>

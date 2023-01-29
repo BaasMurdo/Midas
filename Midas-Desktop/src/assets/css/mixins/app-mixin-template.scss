@@ -1,0 +1,12 @@
+@mixin app-custom-button($theme) {
+  $accent: map-get($theme, accent);
+  .custom-button-example-class999 {
+    color: mat-color(map-get($theme, accent), 500);
+  }
+}
+
+// The mixin below serves as an "export" for all the mixins declared above in this file.
+// Include all mixins declared above in this file here, then there is only 1 mixin to be imported into mixins-index instead of a couple.
+@mixin app-mixin-template($theme) {
+  @include app-custom-button($theme);
+}

@@ -1,0 +1,21 @@
+@import "@angular/material/theming";
+
+$primary: mat-palette($mat-indigo);
+$accent: mat-palette($mat-pink);
+$warn: mat-palette($mat-red);
+// $neutral: mat-palette($md-neutral);
+
+// $typography-config: mat-typography-config();
+
+// $app-custom: mat-palette($custom-colors, custom);
+
+$theme: mat-light-theme($primary, $accent, $warn) !default;
+// $theme: map_merge(
+//   $theme,
+//   (
+//     custom: $app-custom
+//   )
+// );
+
+// $custom: map-get($theme, custom);
+

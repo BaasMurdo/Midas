@@ -1,0 +1,14 @@
+// prefix mat mixins with c-app-XXXXXXXXX, this is so that our naming convention does not conflict with theirs
+@mixin c-app-mat-global($theme) {
+  .mat-tab-body.mat-tab-body-active{
+    overflow-y: hidden !important;
+  }
+}
+
+
+
+// The mixin below serves as an "export" for all the mixins declared above in this file.
+// Include all mixins declared above in this file here, then there is only 1 mixin to be imported into mixins-index instead of a couple.
+@mixin app-mat-mixin($theme) {
+  @include c-app-mat-global($theme);
+}

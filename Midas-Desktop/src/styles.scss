@@ -1,0 +1,39 @@
+@import "./assets/css/theme/app-theme.scss";
+@import "./assets/css/mixins-index.scss";
+
+@include angular-material-theme($theme);
+@include mixins-index($theme);
+
+/*default version*/
+@font-face {
+    font-family: "Monospace";
+    src: url("/assets/fonts/Monospace.ttf") format("ttf");
+}
+
+@font-face {
+    font-family: "MonospaceBold";
+    src: url("/assets/fonts/MonospaceBold.ttf") format("ttf");
+}
+
+@font-face {
+    font-family: "MonospaceOblique";
+    src: url("/assets/fonts/MonospaceOblique.ttf") format("ttf");
+}
+
+/* You can add global styles to this file, and also import other style files */
+p.step-desc {
+    margin: 5px 0px;
+    font-size: 14px;
+}
+
+html {
+    overflow: hidden;
+}
+
+app-loader-button {
+    display: block !important;
+}
+
+.apply-red-font {
+    color:red !important;
+}

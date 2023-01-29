@@ -1,0 +1,5 @@
+@import "mixins/app-mat-mixin.scss";
+
+@mixin mixins-index($theme) {
+  @include app-mat-mixin($theme);
+}

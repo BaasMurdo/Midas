@@ -1,0 +1,16 @@
+<div fxFlex fxLayout="column">
+  <button fxFlex mat-flat-button color="accent" (click)="takeScreenShotNow()">
+    Take Sreenshot
+  </button>
+  <button fxFlex mat-flat-button color="accent" (click)="openDevTools()">
+    Tools
+  </button>
+  <div *ngIf="showImage">
+    <img id="theone" width="700px" height="400px" [src]="currentImg" />
+  </div>
+  <div>
+    <canvas id="canvas"></canvas>
+  </div>
+</div>
+
+
