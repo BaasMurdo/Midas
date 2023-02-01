@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
     console.log('.navigator', (window as any).navigator)
 
     let stream = null;
-    let sourceId = 'window:22742420:0';
+    let sourceId = 'window:200408:0';
 
     stream = await (window as any).navigator.mediaDevices.getUserMedia({
       audio: false,
