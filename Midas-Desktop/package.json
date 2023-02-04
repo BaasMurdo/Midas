@@ -60,6 +60,7 @@
     "@tensorflow-models/coco-ssd": "^2.2.2",
     "@tensorflow/tfjs": "^4.2.0",
     "@types/long": "5.0.0",
+    "electron-traywindow-positioner": "1.1.1",
     "long": "5.2.1",
     "mock-browser": "0.92.14",
     "rxjs": "7.5.7",

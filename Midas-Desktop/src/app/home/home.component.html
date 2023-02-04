@@ -1,20 +1,43 @@
-<div fxFlex fxLayout="column">
-  <button fxFlex mat-flat-button color="accent" (click)="takeScreenShotNow()">
-    Take Sreenshot
+<div class="hover-center" fxFlex fxLayout="row" fxLayoutAlign="center space-between" *ngIf="windowSource">
+  <button mat-flat-button color="accent" (click)="openWindowSelect()">
+    Clear
   </button>
-  <button fxFlex mat-flat-button color="accent" (click)="goLive()">
-    Live
-  </button>
-  <button fxFlex mat-flat-button color="accent" (click)="openDevTools()">
+  <button  mat-flat-button color="accent" (click)="openDevTools()">
     Tools
   </button>
-  <div *ngIf="showImage">
-    <img id="theone" width="700px" height="400px" [src]="currentImg" />
-  </div>
+</div>
+
+<ng-container *ngIf="windowSource">
+<video id="live"></video>
+<canvas id="canvas"></canvas>
+</ng-container>
+
+<!-- <div fxFlex fxLayout="column" *ngIf="windowSource">
   <div class="app">
     <div class="app-header">
       <video id="live"></video>
       <canvas id="canvas"></canvas>
     </div>
   </div>
-</div>
+</div> -->
+
+
+<app-window-selector *ngIf="!windowSource" (selected)="goLive($event)"></app-window-selector>
+
+
+<!-- <div id="wrapper">
+  <div id="callControls" class="clickable" draggable="true">
+    <div id="controller">
+      <div id="dots"></div>
+      <div id="line"></div>
+    </div>
+    <button id="toggleCam"></button>
+    <button id="toggleMic"></button>
+    <button id="clipboard" class="invite"></button>
+    <span id="clipboardTooltip">Room URL copied</span>
+    <button id="toggleBlur" class="blur-off">BLUR</button>
+    <button id="leave">Leave Call</button>
+  </div>
+
+  <div id="tiles"></div>
+</div> -->

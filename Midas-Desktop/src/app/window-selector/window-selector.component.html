@@ -1,0 +1,15 @@
+<div class="frame">
+  <ng-container *ngIf="windowSources && windowSources.length > 0">
+    <div class="window-source-container" *ngFor="let windowSource of windowSources" (click)="selectWindow(windowSource)" >
+      <div>{{windowSource.name}}</div>
+      <img height="240px" *ngIf="windowSource.thumbPath" [src]="windowSource.thumbPath" />
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!windowSources || windowSources.length < 0">
+    <div>
+      <button (click)="getWindowList()" [disabled]="isLoading">Get Windows</button>
+    </div>
+  </ng-container>
+
+</div>

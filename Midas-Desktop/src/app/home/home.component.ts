@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IpcService } from '../_services/ipc.service';
 import { TensorHelperService } from '../_services/tensor-helper.service';
+import { DesktopCapturerSource } from 'electron';
 // import * as m from 'mock-browser';
 // const MockBrowser = require('mock-browser').mocks.MockBrowser;
 
@@ -13,6 +14,7 @@ import { TensorHelperService } from '../_services/tensor-helper.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  windowSource: Electron.DesktopCapturerSource;
 
   constructor(
     private ipcService: IpcService,
@@ -33,6 +35,7 @@ export class HomeComponent implements OnInit {
     this.tfhs.$modelLoaded.subscribe(loaded => {
       console.log('model has loaded?', loaded);
     })
+    // this.goLive();
   }
 
   async takeScreenShotNow() {
@@ -59,11 +62,19 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  async goLive() {
+  async goLive(windowSource: DesktopCapturerSource) {
     console.log('.navigator', (window as any).navigator)
 
     let stream = null;
     let sourceId = 'window:200408:0';
+
+    if(windowSource) {
+      this.windowSource = windowSource;
+      sourceId = windowSource.id
+      console.log('windowSource in goLive', windowSource)
+      this.ipcService.toggleFullScreen();
+      this.changeDetectorRef.detectChanges();
+    }
 
     stream = await (window as any).navigator.mediaDevices.getUserMedia({
       audio: false,
@@ -71,10 +82,8 @@ export class HomeComponent implements OnInit {
         mandatory: {
           chromeMediaSource: 'desktop',
           chromeMediaSourceId: sourceId,
-          minWidth: 901,
-          maxWidth: 901,
-          minHeight: 622,
-          maxHeight: 622
+          width: { min: 1920 },
+          height: { min: 1080 }
         }
       }
     })
@@ -86,6 +95,12 @@ export class HomeComponent implements OnInit {
     await this.tfhs.startPredictVideo(video);
 
     video.onloadedmetadata = (e) => video.play();
+  }
+
+  async openWindowSelect() {
+    this.windowSource = null;
+    this.ipcService.toggleFullScreen();
+    this.changeDetectorRef.detectChanges();
   }
 
   async openDevTools() {

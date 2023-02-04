@@ -9,11 +9,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HomeComponent } from './home/home.component';
 import { SharedModule } from './shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { WindowSelectorComponent } from './window-selector/window-selector.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    WindowSelectorComponent
   ],
   imports: [
     BrowserModule,

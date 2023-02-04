@@ -6,9 +6,13 @@
   position: absolute;
   left: 8;
   text-align: center;
-  width: 770px;
-  height: 580px;
-  top: 100px;
+  // width: 770px;
+  // height: 580px;
+  // top: 100px;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
 }
 
 .app {
@@ -35,4 +39,11 @@
 #live {
   @extend .base;
   z-index: 2;
+}
+
+.hover-center {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 9999;
 }

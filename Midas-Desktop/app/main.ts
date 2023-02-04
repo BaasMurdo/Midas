@@ -33,6 +33,11 @@ function createWindow() {
       devTools: true
     },
     icon: path.join(app.getAppPath(), 'dist/assets', 'favicon.ico'),
+    frame: false,
+    autoHideMenuBar: true,
+    transparent: true,
+    skipTaskbar: true,
+    hasShadow: false,
   });
 
   win.webContents.openDevTools()
@@ -47,7 +52,13 @@ function createWindow() {
   win.on('closed', () => {
     win = null;
   });
+
+  // win.setIgnoreMouseEvents(true, { forward: true });
+  win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  win.setAlwaysOnTop(true, 'normal');
+  // win.maximize();
 }
+
 
 
 ipcMain.on('dev-tools', () => {
@@ -57,7 +68,7 @@ ipcMain.on('dev-tools', () => {
 });
 
 ipcMain.on('take-screen', (event, args) => {
-  desktopCapturer.getSources({ types: ['window', 'screen'], thumbnailSize: { width: 1920, height: 1080 } }).then(sources => {
+  desktopCapturer.getSources({ types: ['window', 'screen'], thumbnailSize: { width: 1920, height: 1080 }, fetchWindowIcons: true }).then(sources => {
     for (let i = 0; i < sources.length; ++i) {
       console.log('for sources', sources[i])
 
@@ -88,28 +99,50 @@ ipcMain.on('open-link', (event, args) => {
   shell.openExternal(args[0]);
 });
 
-// ipcMain.on('set-live', async (event, args) => {
 
-//   let stream = null;
-//   let sourceId = 'window:22742420:0';
+ipcMain.on('get-windows', (event, args) => {
+  desktopCapturer.getSources({ types: ['window', 'screen'], thumbnailSize: { width: 1920, height: 1080 }, fetchWindowIcons: true  }).then(sources => {
 
-//   stream = await args[0].mediaDevices.getUserMedia({
-//     audio: false,
-//     video: {
-//       mandatory: {
-//         chromeMediaSource: 'desktop',
-//         chromeMediaSourceId: sourceId,
-//         minWidth: 1280,
-//         maxWidth: 1280,
-//         minHeight: 720,
-//         maxHeight: 720
-//       }
-//     }
-//   })
+    for (let i = 0; i < sources.length; ++i) {
+        const screenshot = sources[i].thumbnail.toPNG();
+        const d = new Date();
+        const u = Math.random().toString(36).slice(2) + '_' + Math.random().toString(36).slice(2) + '_' + d.getUTCDate().toString() + d.getUTCMilliseconds().toString();
+        // const location = 'E:\\_code\\Midas-Desktop\\src\\assets\\temp\\screenshot_' + u + '.png';
+        // const location = 'E:\\_code\\tempImages\\' + u + '.png';
+        const location = 'E:\\_code\\tempImages\\' + u + '.png';
+        // 'E:\\_code\\Midas-Desktop\\src\\assets\\temp\\screenshot_'
+        sources[i]["thumbPath"] = location;
+        fs.writeFileSync(location, screenshot);
 
-//   if (win) {
-//     event.sender.send('set-live-done', { stream });
-//   } else {
-//     console.log('NO WIN takeScreenShot')
-//   }
-// });
+    }
+
+    if (win) {
+      event.sender.send('get-windows-done', { sources });
+    } else {
+      console.log('NO WIN takeScreenShot')
+    }
+  }
+  );
+})
+
+ipcMain.on('resize-window', (event, args) => {
+  if (win) {
+    if(win.isFullScreen()) {
+      win.setFullScreen(false)
+      // win.setIgnoreMouseEvents(true, { forward: true });
+      win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+      win.setAlwaysOnTop(true, 'normal');
+      // width: 850,
+      // height: 750,
+      win.setSize(850, 750);
+    } else {
+      win.setFullScreen(true)
+      win.setIgnoreMouseEvents(true, { forward: true });
+      win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+      win.setAlwaysOnTop(true, 'normal');
+    }
+
+  } else {
+    console.log('NO WIN takeScreenShot')
+  }
+})

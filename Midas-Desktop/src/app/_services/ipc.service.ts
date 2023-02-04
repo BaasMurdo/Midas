@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { DesktopCapturerSource } from 'electron';
 
 @Injectable({
   providedIn: 'root'
@@ -37,13 +38,13 @@ export class IpcService {
     }
   }
 
-  setVideo(): Observable<{ stream: any}> {
+  setVideo(): Observable<{ stream: any }> {
     console.log('video inside, pre api check')
     if (this.hasApi) {
       this.api.electronIpcSend('set-live', this.navigator);
       return new Observable(subscriber => {
         this.api.electronIpcOn('set-live-done', (event, arg) => {
-          subscriber.next({ stream: (arg as any).stream});
+          subscriber.next({ stream: (arg as any).stream });
         });
       });
     } else {
@@ -64,6 +65,30 @@ export class IpcService {
       console.log('no api picked up')
     }
   }
+
+  getAvailableWindows(): Observable<DesktopCapturerSource[]> {
+    console.log('getAvailableWindows inside, pre api check')
+    if (this.hasApi) {
+      this.api.electronIpcSend('get-windows', this.navigator);
+      return new Observable(subscriber => {
+        this.api.electronIpcOn('get-windows-done', (event, arg) => {
+          subscriber.next(arg.sources);
+        });
+      });
+    } else {
+      console.log('no api picked up')
+    }
+  }
+
+
+  toggleFullScreen() {
+    if (this.hasApi) {
+      this.api.electronIpcSend('resize-window');
+    } else {
+      console.log('no api picked up')
+    }
+  }
+
 
   // getStoredBuyerList(): Observable<any> {
   //   if (this.hasApi) {
